@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Precios - Celulares</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a1a2e;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        h1 span {
+            display: block;
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        label span {
+            margin-right: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4a90d9;
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.1);
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #4a90d9 0%, #1a5fb4 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(74, 144, 217, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .resultado {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .copy-btn {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            font-size: 0.95rem;
+            padding: 12px;
+        }
+
+        .copy-btn:hover {
+            box-shadow: 0 10px 30px rgba(108, 117, 125, 0.4);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+        }
+
+        .output-text {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+            white-space: pre-line;
+            font-family: inherit;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <span>📱💰</span>
+            Calculadora de Precios
+        </h1>
+        
+        <form id="calculadora">
+            <div class="form-group">
+                <label><span>💵</span>Cotización del Dólar del Día</label>
+                <input type="number" id="cotizacion" placeholder="Ej: 1050" step="0.01" required>
+            </div>
+            
+            <div class="form-group">
+                <label><span>📱</span>Modelo de Teléfono</label>
+                <select id="modelo" required onchange="toggleModeloPersonalizado()">
+                    <option value="">Selecciona un modelo</option>
+                    <optgroup label="📱 iPhone">
+                        <option value="IPHONE 13 (128GB)">iPhone 13 (128GB)</option>
+                        <option value="IPHONE 14 (128GB)">iPhone 14 (128GB)</option>
+                        <option value="IPHONE 15 (128GB)">iPhone 15 (128GB)</option>
+                        <option value="IPHONE 15 (256GB)">iPhone 15 (256GB)</option>
+                        <option value="IPHONE 16 (128GB)">iPhone 16 (128GB)</option>
+                        <option value="IPHONE 16 (256GB)">iPhone 16 (256GB)</option>
+                        <option value="IPHONE 17 (256GB)">iPhone 17 (256GB)</option>
+                        <option value="IPHONE 17 AIR (256GB)">iPhone 17 Air (256GB)</option>
+                        <option value="IPHONE 17 PRO (256GB)">iPhone 17 Pro (256GB)</option>
+                        <option value="IPHONE 17 PRO (512GB)">iPhone 17 Pro (512GB)</option>
+                        <option value="IPHONE 17 PRO MAX (256GB)">iPhone 17 Pro Max (256GB)</option>
+                        <option value="IPHONE 17 PRO MAX (512GB)">iPhone 17 Pro Max (512GB)</option>
+                    </optgroup>
+                    <optgroup label="📱 Samsung Galaxy">
+                        <option value="SAMSUNG GALAXY A36 (6/128GB)">Samsung Galaxy A36 (6/128GB)</option>
+                        <option value="SAMSUNG GALAXY A36 (8/128GB)">Samsung Galaxy A36 (8/128GB)</option>
+                        <option value="SAMSUNG GALAXY A36 (8/256GB)">Samsung Galaxy A36 (8/256GB)</option>
+                        <option value="SAMSUNG GALAXY A56 (8/128GB)">Samsung Galaxy A56 (8/128GB)</option>
+                        <option value="SAMSUNG GALAXY A56 (8/256GB)">Samsung Galaxy A56 (8/256GB)</option>
+                        <option value="SAMSUNG GALAXY A56 (12/256GB)">Samsung Galaxy A56 (12/256GB)</option>
+                        <option value="SAMSUNG GALAXY S24 ULTRA (12/256GB)">Samsung Galaxy S24 Ultra (12/256GB)</option>
+                        <option value="SAMSUNG GALAXY S25 ULTRA (12/256GB)">Samsung Galaxy S25 Ultra (12/256GB)</option>
+                        <option value="SAMSUNG GALAXY S25 ULTRA (12/512GB)">Samsung Galaxy S25 Ultra (12/512GB)</option>
+                        <option value="SAMSUNG GALAXY S25 ULTRA (12/1TB)">Samsung Galaxy S25 Ultra (12/1TB)</option>
+                    </optgroup>
+                    <option value="OTRO">✏️ OTRO (Ingresar manualmente)</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="modeloPersonalizadoGroup" style="display: none;">
+                <label><span>✏️</span>Escribe el Modelo Personalizado</label>
+                <input type="text" id="modeloPersonalizado" placeholder="Ej: Xiaomi 14 Pro 256GB">
+            </div>
+            
+            <div class="form-group">
+                <label><span>🎨</span>Colores Disponibles</label>
+                <input type="text" id="colores" placeholder="Ej: Negro, Blanco, Azul" required>
+            </div>
+            
+            <div class="form-group">
+                <label><span>🏷️</span>Precio del Proveedor (USD)</label>
+                <input type="number" id="precioProveedor" placeholder="Ej: 850" step="0.01" required>
+            </div>
+            
+            <button type="submit">Calcular Precio 🧮</button>
+        </form>
+        
+        <div class="resultado" id="resultado">
+            <div class="output-text" id="outputText"></div>
+            <button class="copy-btn" id="copyBtn" onclick="copiarResultado()">📋 Copiar Resultado</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleModeloPersonalizado() {
+            const select = document.getElementById('modelo');
+            const grupoPersonalizado = document.getElementById('modeloPersonalizadoGroup');
+            const inputPersonalizado = document.getElementById('modeloPersonalizado');
+            if (select.value === 'OTRO') {
+                grupoPersonalizado.style.display = 'block';
+                inputPersonalizado.required = true;
+                // Forzar que el cursor vaya al campo manual
+                inputPersonalizado.focus();
+                setTimeout(() => inputPersonalizado.focus(), 50);
+            } else {
+                grupoPersonalizado.style.display = 'none';
+                inputPersonalizado.required = false;
+                inputPersonalizado.value = '';
+            }
+        }
+
+        document.getElementById('calculadora').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Obtener valores
+            const cotizacion = parseFloat(document.getElementById('cotizacion').value);
+            const selectModelo = document.getElementById('modelo').value;
+            const modeloPersonalizado = document.getElementById('modeloPersonalizado').value.trim();
+            const modelo = selectModelo === 'OTRO' ? modeloPersonalizado : selectModelo;
+            const colores = document.getElementById('colores').value.trim();
+            const precioProveedor = parseFloat(document.getElementById('precioProveedor').value);
+            
+            // Cálculos
+            // Efectivo: (Precio proveedor + 100 USD) * cotización
+            const precioEfectivo = (precioProveedor + 100) * cotizacion;
+            
+            // Tarjeta: (Precio efectivo / 0.57) / 6
+            const precioCuota = (precioEfectivo / 0.57) / 6;
+            
+            // Formatear números
+            const formatearPrecio = (precio) => {
+                return precio.toLocaleString('es-AR', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+            };
+            
+            // Crear texto de resultado
+            const textoResultado = `📱 ${modelo.toUpperCase()}
+🎨 Colores: ${colores}
+🇦🇷 Efectivo/transferencia: $${formatearPrecio(precioEfectivo)} pesos
+💳 Tarjeta de crédito: 6 cuotas fijas de $${formatearPrecio(precioCuota)} pesos`;
+            
+            // Mostrar resultado
+            document.getElementById('outputText').textContent = textoResultado;
+            document.getElementById('resultado').style.display = 'block';
+            
+            // Resetear botón de copiar
+            const copyBtn = document.getElementById('copyBtn');
+            copyBtn.textContent = '📋 Copiar Resultado';
+            copyBtn.classList.remove('copied');
+        });
+        
+        function copiarResultado() {
+            const texto = document.getElementById('outputText').textContent;
+            navigator.clipboard.writeText(texto).then(() => {
+                const copyBtn = document.getElementById('copyBtn');
+                copyBtn.textContent = '✅ ¡Copiado!';
+                copyBtn.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copiar Resultado';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
